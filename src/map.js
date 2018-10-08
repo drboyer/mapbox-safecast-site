@@ -99,6 +99,7 @@ map.on('load', () => {
             console.error(`Error encounted loading annotations: ${err}`);
         });
 
+    /* EVENTS */
     map.on('mousemove', (e) => {
         // TODO: bbox or point? let's start with point
         // TODO: we may also need to use this function to render popups for static points, in which case we'll need to change
@@ -112,6 +113,18 @@ map.on('load', () => {
                 .addTo(map);
         }
     });
+
+    map.on('click', 'annotations-points', (e) => {
+        const coordinates = e.features[0].geometry.coordinates;
+        const pointFeatures = e.features.slice(0, 1);
+        pointFeatures[0].properties.coordinates = pointFeatures[0].geometry.coordinates;
+        annotationsPopup.setLngLat(coordinates)
+            .setHTML(renderPopup(pointFeatures))
+            .addTo(map);
+    });
+
+    map.on('mouseenter', 'annotations-points', (e) => map.getCanvas().style.cursor = 'pointer');
+    map.on('mouseleave', 'annotations-points', (e) => map.getCanvas().style.cursor = '');
 });
 
 function filteryear(yearValue) {
