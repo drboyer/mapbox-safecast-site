@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Safecast bGeigie Measurements</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #controls {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            width: 100px;
+            background-color: grey;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div id="controls">
+<h3>Years</h3>
+<input name='year' value='all' type='radio' checked="checked" onchange="filteryear(this.value)" />All Data
+<input name='year' value='2011' type='radio' onchange="filteryear(this.value)"/>2011<br />
+<input name='year' value='2012' type='radio' onchange="filteryear(this.value)"/>2012<br />
+<input name='year' value='2013' type='radio' onchange="filteryear(this.value)"/>2013<br />
+<input name='year' value='2014' type='radio' onchange="filteryear(this.value)"/>2014<br />
+<input name='year' value='2015' type='radio' onchange="filteryear(this.value)"/>2015<br />
+<input name='year' value='2016' type='radio' onchange="filteryear(this.value)"/>2016<br />
+<input name='year' value='2017' type='radio' onchange="filteryear(this.value)"/>2017<br />
+<input name='year' value='2017' type='radio' onchange="filteryear(this.value)"/>2017<br />
+<input name='year' value='2018' type='radio' onchange="filteryear(this.value)"/>2018<br />
+</div>
+
+<div id='map'>
+</div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHJib3llci1tYiIsImEiOiJjajI5NmZscjcwMHFjMzNtbWZleDY0bWdnIn0.z-o8EoH7yO-sZw4k_KegBA';
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/light-v9',
+    // center: [-99.9, 41.5],
+    zoom: 3,
+    hash: true
+});
+
+var popup = new mapboxgl.Popup({
+  closeButton: false,
+  closeOnClick: false
+});
+
+map.on('load', function() {
+    map.addSource("points", {
+        type: "vector",
+        // url: "mapbox://drboyer-mb.5dyzuvud"
+        url: "mapbox://drboyer-mb.21pnzh40"
+    });
+
+    map.addLayer({
+        id: 'safecast-points',
+        type: 'circle',
+        source: 'points',
+        'source-layer': 'bgeigie-measurements',
+        paint: {
+            'circle-radius': {
+                base: 2,
+                stops: [[1, 2], [13, 5]]
+            },
+            // 'circle-color': 'white'
+            // color on an interpolated curve
+            'circle-color': [
+                    "interpolate",
+                    ["linear"],
+                    // ["exponential", 10],
+                    ["log10", ["get", "value"]],
+                    0, 'black',
+                    0.08, 'blue',
+                    0.20, 'aqua',
+                    0.45, 'pink',
+                    0.60, 'red',
+                    2.15, 'orange',
+                    4.00, 'yellow',
+                    65, 'white'
+                ]
+        }
+    }, 'waterway-label');
+
+    // immediately filter out features with cpm non-conversion
+    // map.setFilter('safecast-points', ["all", ["==", ["get", "unit"], "cpm"], ["!=", ["get", "value"], ["get", "orig_value"]]]);
+    map.setFilter('safecast-points', ["!=", ["get", "orig_unit"], "cpm"]);
+    console.log('filter applied');
+
+    map.on('mousemove', function(e) {
+        // TODO: bbox or point? let's start with point
+        // TODO: we may also need to use this function to render popups for static points, in which case we'll need to change
+        //       which points are utilized
+        const features = map.queryRenderedFeatures(e.point, { layers: ['safecast-points']}) || [];
+        if (!features.length) {
+            popup.remove();
+        } else {
+            popup.setLngLat(e.lngLat)
+                .setHTML(renderPopup(features))
+                .addTo(map);
+        }
+    });
+});
+
+function filteryear(yearValue) {
+    var filter = null;
+    if (yearValue !== 'all') {
+        const startDate = new Date(parseInt(yearValue), 1, 1);
+        const endDate = new Date(parseInt(yearValue)+1, 1, 1);
+        filter = ["all", [">=", ["get", "observation_timestamp"], startDate.getTime()/1000], ["<", ["get", "observation_timestamp"], endDate.getTime()/1000]];
+    }
+    map.setFilter('safecast-points', filter);
+}
+
+function renderPopup(features) {
+    var popupHTML = '<table>';
+    features.forEach(function(feature, i) {
+        popupHTML += '<tr><th colspan="2">Feature ' + (i+1) + '</th></tr>';
+        Object.keys(feature.properties).forEach(function(prop) {
+            if (prop == 'observation_timestamp') return; 
+            popupHTML += '<tr><td>' + prop + '</td><td>' + feature.properties[prop] + '</td></tr>';
+        });
+    });
+    popupHTML += '</table>';
+    return popupHTML;
+}
+
+
+</script>
+</body>
+</html>
