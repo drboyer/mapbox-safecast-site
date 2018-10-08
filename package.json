@@ -4,7 +4,8 @@
   "description": "Safecast interactive map, built on Mapbox!",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/*.test.js"
+    "test": "tape test/*.test.js",
+    "build": "webpack && curl -o dist/polys.json http://safecast.org/tilemap/polys.json"
   },
   "author": "Devin Boyer",
   "license": "MIT",

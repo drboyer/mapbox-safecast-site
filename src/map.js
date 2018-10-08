@@ -1,43 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8' />
-    <title>Safecast bGeigie Measurements</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
-    <style>
-        body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
-        #controls {
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
-            width: 100px;
-            background-color: grey;
-            color: white;
-        }
-    </style>
-</head>
-<body>
-<div id="controls">
-<h3>Years</h3>
-<input name='year' value='all' type='radio' checked="checked" onchange="filteryear(this.value)" />All Data
-<input name='year' value='2011' type='radio' onchange="filteryear(this.value)"/>2011<br />
-<input name='year' value='2012' type='radio' onchange="filteryear(this.value)"/>2012<br />
-<input name='year' value='2013' type='radio' onchange="filteryear(this.value)"/>2013<br />
-<input name='year' value='2014' type='radio' onchange="filteryear(this.value)"/>2014<br />
-<input name='year' value='2015' type='radio' onchange="filteryear(this.value)"/>2015<br />
-<input name='year' value='2016' type='radio' onchange="filteryear(this.value)"/>2016<br />
-<input name='year' value='2017' type='radio' onchange="filteryear(this.value)"/>2017<br />
-<input name='year' value='2017' type='radio' onchange="filteryear(this.value)"/>2017<br />
-<input name='year' value='2018' type='radio' onchange="filteryear(this.value)"/>2018<br />
-</div>
+"use strict";
+import renderPolys from './polys_rendering';
+import mapboxgl from 'mapbox-gl';
+// import ky from 'ky';
 
-<div id='map'>
-</div>
-<script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiZHJib3llci1tYiIsImEiOiJjajI5NmZscjcwMHFjMzNtbWZleDY0bWdnIn0.z-o8EoH7yO-sZw4k_KegBA';
 var map = new mapboxgl.Map({
     container: 'map',
@@ -47,12 +12,17 @@ var map = new mapboxgl.Map({
     hash: true
 });
 
-var popup = new mapboxgl.Popup({
+var radPopup = new mapboxgl.Popup({
   closeButton: false,
   closeOnClick: false
 });
 
-map.on('load', function() {
+var annotationsPopup = new mapboxgl.Popup({
+    // closeButton: false,
+    // closeOnClick: false
+  });
+
+map.on('load', () => {
     map.addSource("points", {
         type: "vector",
         // url: "mapbox://drboyer-mb.5dyzuvud"
@@ -93,15 +63,51 @@ map.on('load', function() {
     map.setFilter('safecast-points', ["!=", ["get", "orig_unit"], "cpm"]);
     console.log('filter applied');
 
-    map.on('mousemove', function(e) {
+    // load annoations layer and add it to the map
+    console.log(`fetching polys from ${location.protocol}//${location.host}/dist/polys.json`);
+    // fetch('http://safecast.org/tilemap/polys.json')
+    fetch(`${location.protocol}//${location.host}/dist/polys.json`)
+        .then(resp => resp.json())
+        .then((polysJson) => {
+            return renderPolys(polysJson)
+        })
+        .then((annotationsFC) => {
+            map.addSource("annotations", {
+                type: "geojson",
+                data: annotationsFC
+            });
+
+            map.addLayer({
+                id: 'annotations-points',
+                type: 'circle',
+                source: 'annotations',
+                paint: {
+                    'circle-radius': 5,
+                    'circle-color': 'red',
+                    'circle-stroke-width': 1,
+                    'circle-stroke-color': 'white'
+                }
+            });
+
+            map.addLayer({
+                id: 'annotations-line',
+                type: 'line',
+                source: 'annotations'
+            });
+        })
+        .catch((err) => {
+            console.error(`Error encounted loading annotations: ${err}`);
+        });
+
+    map.on('mousemove', (e) => {
         // TODO: bbox or point? let's start with point
         // TODO: we may also need to use this function to render popups for static points, in which case we'll need to change
         //       which points are utilized
         const features = map.queryRenderedFeatures(e.point, { layers: ['safecast-points']}) || [];
         if (!features.length) {
-            popup.remove();
+            radPopup.remove();
         } else {
-            popup.setLngLat(e.lngLat)
+            radPopup.setLngLat(e.lngLat)
                 .setHTML(renderPopup(features))
                 .addTo(map);
         }
@@ -120,9 +126,9 @@ function filteryear(yearValue) {
 
 function renderPopup(features) {
     var popupHTML = '<table>';
-    features.forEach(function(feature, i) {
+    features.forEach((feature, i) => {
         popupHTML += '<tr><th colspan="2">Feature ' + (i+1) + '</th></tr>';
-        Object.keys(feature.properties).forEach(function(prop) {
+        Object.keys(feature.properties).forEach((prop) => {
             if (prop == 'observation_timestamp') return; 
             popupHTML += '<tr><td>' + prop + '</td><td>' + feature.properties[prop] + '</td></tr>';
         });
@@ -130,8 +136,3 @@ function renderPopup(features) {
     popupHTML += '</table>';
     return popupHTML;
 }
-
-
-</script>
-</body>
-</html>
