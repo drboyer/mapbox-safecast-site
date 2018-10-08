@@ -21,7 +21,7 @@ function renderFeatures(inputPolyFeatures) {
                 properties,
                 geometry: {
                     type: 'Point',
-                    coordinates: [inpoly.point.y, inpoly.point.x]
+                    coordinates: [inpoly.point.x, inpoly.point.y]
                 }
             };
         } else if (inpoly.path) {

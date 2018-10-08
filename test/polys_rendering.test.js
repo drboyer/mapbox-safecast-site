@@ -23,6 +23,6 @@ test('render-features', (t) => {
     t.deepEqual(outputGeoJSON.features[0].properties.attribution, inputFeatures.polys[0].atts, 'matching attribution property');
     // geometry tests
     t.deepEqual(outputGeoJSON.features[0].geometry, fukishamaGeom, 'path feature geometry matches expected')
-    t.deepEqual(outputGeoJSON.features[1].geometry, { type: 'Point', coordinates: [47.84, 8.0408]}, 'point feature geometry matches expected');
+    t.deepEqual(outputGeoJSON.features[1].geometry, { type: 'Point', coordinates: [8.0408, 47.84]}, 'point feature geometry matches expected');
     t.end();
 });
