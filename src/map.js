@@ -25,8 +25,7 @@ var annotationsPopup = new mapboxgl.Popup({
 map.on('load', () => {
     map.addSource("points", {
         type: "vector",
-        // url: "mapbox://drboyer-mb.5dyzuvud"
-        url: "mapbox://drboyer-mb.21pnzh40"
+        url: "mapbox://drboyer-mb.cprtmxsk"
     });
 
     map.addLayer({
@@ -57,11 +56,6 @@ map.on('load', () => {
                 ]
         }
     }, 'waterway-label');
-
-    // immediately filter out features with cpm non-conversion
-    // map.setFilter('safecast-points', ["all", ["==", ["get", "unit"], "cpm"], ["!=", ["get", "value"], ["get", "orig_value"]]]);
-    map.setFilter('safecast-points', ["!=", ["get", "orig_unit"], "cpm"]);
-    console.log('filter applied');
 
     // load annoations layer and add it to the map
     console.log(`fetching polys from ${location.protocol}//${location.host}/dist/polys.json`);
