@@ -67,6 +67,29 @@ map.on('load', () => {
             return renderFeaturesLayer(polysJson);
         })
         .then((annoationsLayers) => {
+            map.addSource("annotations-paths", {
+                type: "geojson",
+                data: annoationsLayers.pathFeatures
+            });
+            map.addLayer({
+                id: 'annotations-paths',
+                type: 'fill',
+                source: 'annotations-paths',
+                paint: {
+                    'fill-opacity': 0.33
+                }
+            });
+            map.addLayer({
+                id: 'annotations-paths-outline',
+                type: 'line',
+                source: 'annotations-paths',
+                paint: {
+                    'line-width': 3,
+                    'line-color': 'red',
+                    'line-dasharray': [7, 1]
+                }
+            });
+
             map.addSource("annotations-points", {
                 type: "geojson",
                 data: annoationsLayers.pointFeatures
@@ -83,20 +106,6 @@ map.on('load', () => {
                     'circle-color': 'limegreen',
                     'circle-stroke-width': 1,
                     'circle-stroke-color': 'white'
-                }
-            });
-
-            map.addSource("annotations-paths", {
-                type: "geojson",
-                data: annoationsLayers.pathFeatures
-            });
-            map.addLayer({
-                id: 'annotations-paths',
-                type: 'line',
-                source: 'annotations-paths',
-                paint: {
-                    'line-width': 2,
-                    'line-color': 'white'
                 }
             });
         })
@@ -127,9 +136,17 @@ map.on('load', () => {
             .setHTML(renderPopup(pointFeatures))
             .addTo(map);
     });
-
     map.on('mouseenter', 'annotations-points', (e) => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', 'annotations-points', (e) => map.getCanvas().style.cursor = '');
+
+    map.on('click', 'annotations-paths', (e) => {
+        const pointFeatures = e.features.slice(0, 1);
+        annotationsPopup.setLngLat(e.lngLat)
+            .setHTML(renderPopup(pointFeatures))
+            .addTo(map);
+    });
+    map.on('mouseenter', 'annotations-paths', (e) => map.getCanvas().style.cursor = 'pointer');
+    map.on('mouseleave', 'annotations-paths', (e) => map.getCanvas().style.cursor = '');
 });
 
 function filteryear(yearValue) {
