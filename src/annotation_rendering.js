@@ -1,5 +1,6 @@
 "use strict";
 const polyline = require('@mapbox/polyline');
+const lineToPolygon = require('@turf/line-to-polygon').default;
 
 // TODO: Support languages other than en?
 function renderFeatureLayers(inputPolyFeatures) {
@@ -36,11 +37,11 @@ function renderFeatureLayers(inputPolyFeatures) {
                 }
             });
         } else if (inpoly.path) {
-            outputLayers.pathFeatures.features.push({
+            outputLayers.pathFeatures.features.push(lineToPolygon({
                 type: 'Feature',
                 properties,
-                geometry: polyline.toGeoJSON(inpoly.path)  // TODO: convert ot Polygon?
-            });
+                geometry: polyline.toGeoJSON(inpoly.path)
+            }));
         }
     });
     return outputLayers;
