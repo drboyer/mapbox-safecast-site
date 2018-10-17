@@ -2,18 +2,15 @@
 
 ## building and running
 
-frontend javascript work happens in the .js files in the src/ directory.
+Frontend javascript work happens in the .js files in the src/ directory.
 
-After making changes, run this to compile them into a single **map.js** file in dist/:
+If you've just cloned this repo, you must first run `npm install` to install the
+Node/JS modules locally.
 
-```
-npm run build
-```
+Run `npm run start` to start a local webserver running at http://localhost:8080/.
 
-The easiest way to view the site locally is to run the following command from the base of this repo:
+This webserver will compile the .js files in the src/ directory and automatically
+rebuild the output JavaScript whenever any files in the src/ are updated and saved.
 
-```
-python -mSimpleHTTPServer
-```
-
-you'll then find the site running at http://localhost:8000/dist/
+If you want to manually build the output Javascript files without running the
+development web server, you can run `npm run build`

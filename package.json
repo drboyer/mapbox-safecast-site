@@ -5,14 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "tape test/*.test.js",
-    "build": "webpack && curl -o dist/polys.json http://safecast.org/tilemap/polys.json"
+    "build": "webpack && curl -o dist/polys.json http://safecast.org/tilemap/polys.json",
+    "start": "webpack-dev-server"
   },
   "author": "Devin Boyer",
   "license": "MIT",
   "devDependencies": {
     "tape": "^4.9.1",
     "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2"
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.9"
   },
   "dependencies": {
     "@mapbox/polyline": "^1.0.0",

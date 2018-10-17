@@ -58,9 +58,9 @@ map.on('load', () => {
     }, 'waterway-label');
 
     // load annoations layer and add it to the map
-    console.log(`fetching polys from ${location.protocol}//${location.host}/dist/polys.json`);
+    console.log(`fetching polys from ${location.protocol}//${location.host}/polys.json`);
     // fetch('http://safecast.org/tilemap/polys.json')
-    fetch(`${location.protocol}//${location.host}/dist/polys.json`)
+    fetch(`${location.protocol}//${location.host}/polys.json`)
         .then(resp => resp.json())
         .then((polysJson) => {
             return renderPolys(polysJson)
