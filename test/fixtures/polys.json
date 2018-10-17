@@ -1,0 +1,190 @@
+{
+    "groups": [
+        {
+            "group_id": 0,
+            "parent_id": null,
+            "desc": [
+              {
+                "k": "en",
+                "v": "Areas"
+              },
+              {
+                "k": "ja",
+                "v": "区域"
+              },
+              {
+                "k": "es",
+                "v": "Áreas"
+              },
+              {
+                "k": "pt",
+                "v": "Áreas"
+              },
+              {
+                "k": "cs",
+                "v": "Oblasti"
+              }
+            ]
+        }
+    ],
+    "polys": [
+        {
+            "poly_id": 0,
+            "group_id": 0,
+            "author": "Azby Brown",
+            "tl": "Jim Ruiz, Renato Nakagomi",
+            "date": "2016-11-08T22:02:00Z",
+            "desc": [
+              {
+                "k": "en",
+                "v": "Fukushima Zone"
+              },
+              {
+                "k": "ja",
+                "v": "福島の帰還困難区域"
+              },
+              {
+                "k": "es",
+                "v": "Zona de Fukushima"
+              },
+              {
+                "k": "pt",
+                "v": "Região de Fukushima"
+              }
+            ],
+            "info": [
+              {
+                "k": "en",
+                "v": "As of 2013-05-28, Fukushima's 帰還困難区域 (Kikan Konnan Kuiki), or &quot;Difficult to Return Area&quot;, is defined as having an annual cumulative radiation dose of 50+ mSv, and 20+ mSv after five years."
+              },
+              {
+                "k": "ja",
+                "v": "2013年5月28日 - 5年を経過してもなお、年間積算放射線量が20 mSvを下回らないおそれのある、現時点で年間積算放射線量が50 mSvを超える区域。"
+              },
+              {
+                "k": "es",
+                "v": "As of 2013-05-28, Fukushima's 帰還困難区域 (Kikan Konnan Kuiki), or &quot;Difficult to Return Area&quot;, is defined as having an annual cumulative radiation dose of 50+ mSv, and 20+ mSv after five years."
+              },
+              {
+                "k": "pt",
+                "v": "Em 28/05/2013, 帰還困難区域 (Kikan Konnan Kuiki), ou &quot;Área de Difícil Retorno&quot; de Fukushima, é definida como uma área que apresenta uma dose cumulativa de radiação anual de 50+ mSv, e 20+ mSv após cinco anos."
+              }
+            ],
+            "imgs": [
+              {
+                "k": "en",
+                "v": [
+                  "",
+                  "https://maps.googleapis.com/maps/api/streetview?size=640x300&location=37.4534048,141.0090188&heading=283.99&fov=48&pitch=8&key=AIzaSyAC5-_YqoGgLWli64OHZ1HUL2XHgMJel_g",
+                  "filter:brightness(1.25);"
+                ]
+              }
+            ],
+            "atts": [
+              {
+                "k": "en",
+                "v": [
+                  "Wikipedia",
+                  "http://ja.wikipedia.org/wiki/帰還困難区域"
+                ]
+              },
+              {
+                "k": "ja",
+                "v": [
+                  "ウィキペディア",
+                  "http://ja.wikipedia.org/wiki/帰還困難区域"
+                ]
+              }
+            ],
+            "path": "gtwcFezl{YdbAmc@|a@xcBm{@d_@u@xsAoo@`@wWzKlBqd@}a@pGuh@_z@kN`@cOvu@s]dQoMj_A|JvdAkrAbvBohBvXg}C`dCcf@ppAizE`yAwdAflAdDr}B|OrV`r@bA`hA|aCub@veAt@vIeZjE{cAdm@oz@zKkSxlDrWbPjHrnBry@qd@xx@_k@hNf`@jBl`Arh@{i@lj@vI~sAf~@eOvdAfIxYvoAeArFvWnhBj`At@mjChNse@@g}@dk@ewBZuu@}PiDya@~MyKio@j_@am@_Ei}@zPmaAzVa]ni@d_@dOe|@za@~Llj@eoEjY_z@dhAgBx~@mE~cAaOx\\wIrn@b^zVst@hNuH|a@nFpo@`@lSqe@lxAqF`Vqe@yKqUtLoc@uLse@gq@yh@`DsVyVi~@j~A_@aJwWlp@yKb[jb@rX{Zza@ePy\\c{@ri@wJsLor@hk@pU_Vw~Bsi@saB|J{v@h|@os@hw@uHzVchBjsAePpAiRzy@e_@nSg`@sRyY[soBgf@iR?e^iZ_NgC`NozF`Ow{CoF_dAcAo^uHcJoFuWbAgT?w@toBeIwIaa@eAcl@nE{\\~k@dDbOcJzKhCfQyKrVhC|x@sRkDiTbOfIzx@aP|[zKxX",
+            "ss": [
+              {
+                "line": 1,
+                "events": 1,
+                "sc": "#0F0",
+                "sw": 2,
+                "so": 1,
+                "fc": "#0F0",
+                "fo": 0,
+                "zi": -32767,
+                "min_z": 9,
+                "max_z": 23
+              },
+              {
+                "line": 0,
+                "events": 0,
+                "sc": "#000",
+                "sw": 6,
+                "so": 1,
+                "fc": "#000",
+                "fo": 0.2,
+                "zi": -32768,
+                "min_z": 9,
+                "max_z": 23
+              },
+              {
+                "line": 1,
+                "events": 1,
+                "sc": "#0F0",
+                "sw": 1,
+                "so": 1,
+                "fc": "#0F0",
+                "fo": 0,
+                "zi": -32767,
+                "min_z": 8,
+                "max_z": 8
+              },
+              {
+                "line": 1,
+                "events": 0,
+                "sc": "#000",
+                "sw": 3,
+                "so": 1,
+                "fc": "#000",
+                "fo": 0,
+                "zi": -32768,
+                "min_z": 8,
+                "max_z": 8
+              }
+            ]
+          },
+          {
+            "poly_id": 4,
+            "group_id": 2,
+            "author": "BergiX",
+            "date": "2016-11-07T21:03:15Z",
+            "desc": [
+              {
+                "k": "en",
+                "v": "Safecasting Abandoned Uranium Mines"
+              }
+            ],
+            "info": [
+              {
+                "k": "en",
+                "v": "{TL_NA}Safecast volunteer BergiX has uploaded quite a few interesting logs from former uranium mining sites in Germany and elsewhere. In the process of checking with him about some of the surprisingly high readings he posted before approving his uploads, we learned that he is careful, well-informed, and researches sites well before visiting them. We invited him to share his experiences on our blog."
+              }
+            ],
+            "imgs": "http://i2.wp.com/blog.safecast.org/wp-content/uploads/2016/11/Nano-bergiX-01.jpg?zoom=2&fit=1184%2C1353",
+            "more": [
+              {
+                "k": "en",
+                "v": [
+                  "{FULL_ARTICLE}",
+                  "http://blog.safecast.org/2016/11/safecasting-abandoned-uranium-mines/"
+                ]
+              }
+            ],
+            "point": {
+              "x": 8.0408,
+              "y": 47.84
+            },
+            "icon": {
+              "url": "sc-icon-go_v3_80x80.png",
+              "w": 20,
+              "h": 20,
+              "zi": -32768
+            }
+          }
+    ]
+}
