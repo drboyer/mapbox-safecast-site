@@ -1,7 +1,8 @@
 "use strict";
-import renderPolys from './polys_rendering';
+import renderFeaturesLayer from './annotation_rendering';
 import mapboxgl from 'mapbox-gl';
-// import ky from 'ky';
+
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZHJib3llci1tYiIsImEiOiJjajI5NmZscjcwMHFjMzNtbWZleDY0bWdnIn0.z-o8EoH7yO-sZw4k_KegBA';
 var map = new mapboxgl.Map({
@@ -36,7 +37,7 @@ map.on('load', () => {
         paint: {
             'circle-radius': {
                 base: 2,
-                stops: [[1, 2], [13, 5]]
+                stops: [[1, 2], [13, 5], [15, 7]]
             },
             // 'circle-color': 'white'
             // color on an interpolated curve
@@ -63,30 +64,49 @@ map.on('load', () => {
     fetch(`${location.protocol}//${location.host}/polys.json`)
         .then(resp => resp.json())
         .then((polysJson) => {
-            return renderPolys(polysJson)
+            return renderFeaturesLayer(polysJson);
         })
-        .then((annotationsFC) => {
-            map.addSource("annotations", {
+        .then((annoationsLayers) => {
+            map.addSource("annotations-paths", {
                 type: "geojson",
-                data: annotationsFC
+                data: annoationsLayers.pathFeatures
             });
-
             map.addLayer({
-                id: 'annotations-points',
-                type: 'circle',
-                source: 'annotations',
+                id: 'annotations-paths',
+                type: 'fill',
+                source: 'annotations-paths',
                 paint: {
-                    'circle-radius': 5,
-                    'circle-color': 'red',
-                    'circle-stroke-width': 1,
-                    'circle-stroke-color': 'white'
+                    'fill-opacity': 0.33
+                }
+            });
+            map.addLayer({
+                id: 'annotations-paths-outline',
+                type: 'line',
+                source: 'annotations-paths',
+                paint: {
+                    'line-width': 3,
+                    'line-color': 'red',
+                    'line-dasharray': [7, 1]
                 }
             });
 
+            map.addSource("annotations-points", {
+                type: "geojson",
+                data: annoationsLayers.pointFeatures
+            });
             map.addLayer({
-                id: 'annotations-line',
-                type: 'line',
-                source: 'annotations'
+                id: 'annotations-points',
+                type: 'circle',
+                source: 'annotations-points',
+                paint: {
+                    'circle-radius': {
+                        base: 5,
+                        stops: [[1,5], [10, 8]]
+                    },
+                    'circle-color': 'limegreen',
+                    'circle-stroke-width': 1,
+                    'circle-stroke-color': 'white'
+                }
             });
         })
         .catch((err) => {
@@ -116,9 +136,17 @@ map.on('load', () => {
             .setHTML(renderPopup(pointFeatures))
             .addTo(map);
     });
-
     map.on('mouseenter', 'annotations-points', (e) => map.getCanvas().style.cursor = 'pointer');
     map.on('mouseleave', 'annotations-points', (e) => map.getCanvas().style.cursor = '');
+
+    map.on('click', 'annotations-paths', (e) => {
+        const pointFeatures = e.features.slice(0, 1);
+        annotationsPopup.setLngLat(e.lngLat)
+            .setHTML(renderPopup(pointFeatures))
+            .addTo(map);
+    });
+    map.on('mouseenter', 'annotations-paths', (e) => map.getCanvas().style.cursor = 'pointer');
+    map.on('mouseleave', 'annotations-paths', (e) => map.getCanvas().style.cursor = '');
 });
 
 function filteryear(yearValue) {
@@ -130,6 +158,7 @@ function filteryear(yearValue) {
     }
     map.setFilter('safecast-points', filter);
 }
+window.filteryear = filteryear;
 
 function renderPopup(features) {
     var popupHTML = '<table>';

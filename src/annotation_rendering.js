@@ -2,8 +2,19 @@
 const polyline = require('@mapbox/polyline');
 
 // TODO: Support languages other than en?
-function renderFeatures(inputPolyFeatures) {
-    const outputFeatures = inputPolyFeatures.polys.map((inpoly) => {
+function renderFeatureLayers(inputPolyFeatures) {
+    const outputLayers = {
+        pointFeatures: {
+            type: 'FeatureCollection',
+            features: []
+        },
+        pathFeatures: {
+            type: 'FeatureCollection',
+            features: []
+        }
+    };
+    
+    inputPolyFeatures.polys.forEach((inpoly) => {
         const properties = {
             poly_id: inpoly.poly_id,
             group_id: inpoly.group_id,
@@ -16,28 +27,25 @@ function renderFeatures(inputPolyFeatures) {
             attribution: inpoly.atts  // attributions
         };
         if (inpoly.point) {
-            return {
+            outputLayers.pointFeatures.features.push({
                 type: 'Feature',
                 properties,
                 geometry: {
                     type: 'Point',
                     coordinates: [inpoly.point.x, inpoly.point.y]
                 }
-            };
+            });
         } else if (inpoly.path) {
-            return {
+            outputLayers.pathFeatures.features.push({
                 type: 'Feature',
                 properties,
-                geometry: polyline.toGeoJSON(inpoly.path)
-            };
+                geometry: polyline.toGeoJSON(inpoly.path)  // TODO: convert ot Polygon?
+            });
         }
     });
-    return {
-        type: 'FeatureCollection',
-        features: outputFeatures
-    };
+    return outputLayers;
 }
 
 // TODO: render some Mapbox popups?
 
-module.exports = renderFeatures;
+module.exports = renderFeatureLayers;
