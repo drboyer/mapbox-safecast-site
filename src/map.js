@@ -4,7 +4,7 @@ import mapboxgl from 'mapbox-gl';
 
 
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZHJib3llci1tYiIsImEiOiJjajI5NmZscjcwMHFjMzNtbWZleDY0bWdnIn0.z-o8EoH7yO-sZw4k_KegBA';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHJib3llci1tYiIsImEiOiJjam5nN2hyeWUwMDhvM2twYXhhMTd0bm8wIn0.AkfRkWYpPtavX4V0brPwHw';
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v9',
