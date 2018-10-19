@@ -76,7 +76,7 @@ map.on('load', () => {
                 type: 'fill',
                 source: 'annotations-paths',
                 paint: {
-                    'fill-opacity': 0.33
+                    'fill-opacity': 0.25
                 }
             });
             map.addLayer({
